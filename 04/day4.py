@@ -1,7 +1,10 @@
 import hashlib
 
+# input: iwrupvqb
+
+# Part 1
 def find_numbers(secret_key):
-    """Given a secret_key, find the lowest positive no. to get MD5 hash.
+    """Given a secret_key, find the lowest positive no. to get MD5 hash that begins with five 0s.
 
     Args:
         secret_key: string of letters, e.g., 'abcdef',
@@ -11,10 +14,18 @@ def find_numbers(secret_key):
 
     num = 1
     m = hashlib.md5(secret_key + str(num)).hexdigest()
-    while m[0-4] != '00000':
-        print num
-        m = hashlib.md5(secret_key + str(num)).hexdigest()
-        print m
+    while m[:5] != '00000':
         num += 1
+        m = hashlib.md5(secret_key + str(num)).hexdigest()
     return num
 
+# Part 2
+def find_numbers2(secret_key):
+    """Now looking for the number that produces a hash beginning with six 0s"""
+
+    num = 1
+    m = hashlib.md5(secret_key + str(num)).hexdigest()
+    while m[:6] != '000000':
+        num += 1
+        m = hashlib.md5(secret_key + str(num)).hexdigest()
+    return num
