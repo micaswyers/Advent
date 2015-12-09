@@ -1,10 +1,11 @@
 # Part 1
 
 def follow_directions():
+    wire_diagram = set()
     with open('input.txt') as f:
         for line in f:
-            print line
-            process_direction(line)
+            wire_diagram.append(line)
+    print wire_diagram
 
 def process_direction(direction):
     directions = direction.split()
