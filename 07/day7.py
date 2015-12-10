@@ -10,6 +10,7 @@ def save_directions():
 
 def directions_loop(wire_diagram):
     wire_values = {}
+    wire_values['b'] = 46065 # Part 2
     while 'a' not in wire_values:
         for line in wire_diagram:
             process_direction(line, wire_values)
@@ -22,6 +23,8 @@ def process_direction(direction, wire_values):
 
     directions = operation[0].split()
     assigned = operation[1].strip()
+    if assigned in wire_values:
+        return
 
     if len(directions) == 1:
         op1 = get_value(directions[0], wire_values)
@@ -61,12 +64,21 @@ def process_direction(direction, wire_values):
     return
 
 def get_value(s, d):
-    """Determine if string s is in d or if it's a literal"""
+    """Determine if string s is in d or if it's a literal
+
+        Args:
+            s: string representing item left of ->
+            d: dictionary of values
+        Returns:
+            - value of s in dict, cast of s to an int, or -1 if s is not in the
+            dictionary & cannot be cast as an int (=s has not yet been assigned)
+    """
 
     if s in d:
         return d[s]
     try:
         return int(s)
     except Exception:
+        # Returning -1 here instead of False because some strings mapped to 0
         return -1
     return -1
