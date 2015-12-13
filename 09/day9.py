@@ -77,7 +77,7 @@ def create_distances_dict(nodes_list, node_dict):
 
     return distances_dict
 
-def shortest_route(distances_dict, remaining_nodes, current_node=None):
+def calculate_route(distances_dict, remaining_nodes, current_node=None):
     """Calculate shortest route between nodes
 
     Args:
@@ -99,13 +99,15 @@ def shortest_route(distances_dict, remaining_nodes, current_node=None):
         possible_next_nodes = remaining_nodes[:]
         if current_node:
             distance += distances_dict[current_node][next_node]
-        distance += shortest_route(
+        distance += calculate_route(
             distances_dict,
             possible_next_nodes,
             possible_next_nodes.pop(remaining_nodes.index(next_node)),
         )
         distances.append(distance)
-    return min(distances)
+    # return min(distances) # Part 1 - shortest route
+    return max(distances) # Part 2 - longest route
+
 
 def index():
 
@@ -114,4 +116,4 @@ def index():
     distances_dict = create_distances_dict(all_nodes, nodes_and_distances)
 
 
-    return shortest_route(distances_dict, all_nodes)
+    return calculate_route(distances_dict, all_nodes)
