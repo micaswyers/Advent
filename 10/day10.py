@@ -1,5 +1,5 @@
-# Part 1
-# Input: 3113322113
+# Part 1 input: 3113322113, 40 times
+# Part 1 input, 3113322113, 50 times
 
 def count_chars(input_numbers):
     """Given input_numbers, return the counts of consecutive characters
@@ -33,7 +33,14 @@ def count_chars(input_numbers):
     return counts
 
 def make_next_number(counts_list):
-    """Returns new number from list of characters & their consecutive counts"""
+    """Returns new number from list of characters & their consecutive counts
+
+        Args:
+            counts_list: list of chars & their consecutive repeats
+                e.g., [['3', 1], ['1', 2], ['3', 2], ['2', 2], ['1', 2], ['3', 1]]
+        Returns:
+            new_number: (int) reinterpreted from counts_list
+    """
 
     new_number = ''
     for char_stats in counts_list:
