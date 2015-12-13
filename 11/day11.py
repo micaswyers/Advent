@@ -1,5 +1,10 @@
 import re
 
+COMBOS = []
+for i in range(97,121):
+    combo = chr(i) + chr(i+1) + chr(i+2)
+    COMBOS.append(combo)
+
 def iterate_pword(current_password):
     """Get the next possible password starting from the rightmost character"""
 
@@ -28,16 +33,14 @@ def _num_to_pword(num):
     return pword
 
 def vet_password(pword):
-
+    while not (increasing_straight(pword) and no_disallowed_letters(pword) and two_pairs(pword)):
+        pword=iterate_pword(pword)
+    return pword
 
 def increasing_straight(pword):
     """Returns True if there is one increasing straight of at least three letters"""
 
-    combos = []
-    for i in range(97,121):
-        combo = chr(i) + chr(i+1) + chr(i+2)
-        combos.append(combo)
-    combo_finders = [re.compile(combo) for combo in combos]
+    combo_finders = [re.compile(combo) for combo in COMBOS]
     for combo_finder in combo_finders:
         if re.search(combo_finder, pword):
             return True
@@ -52,11 +55,6 @@ def no_disallowed_letters(pword):
 def two_pairs(pword):
     """Returns True if pword contains two different, non-overlapping pairs of letters"""
 
-    """
-    pair_finder = re.compile('([a-z]{2})[a-z]*([a-z]{2}^\\1)')
-    pairs = re.search(pair_finder, pword)
-    if pairs:
-    """
     last = ''
     count = 1
     counts = []
