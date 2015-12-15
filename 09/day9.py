@@ -45,10 +45,6 @@ def find_all_nodes(distances_dict):
                 places_list.append(point)
     return places_list
 
-def calculate_lowest_distance(places_list):
-
-    pass
-
 
 def create_distances_dict(nodes_list, node_dict):
     """Return a dict mapping each node to a dict of nodes & distances
