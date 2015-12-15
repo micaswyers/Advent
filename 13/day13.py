@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-def parse_input():
+def parse_input(input_file):
     """Returns a dict mapping each person to other people & how happy this makes her.
 
     Sample output:
@@ -8,7 +8,7 @@ def parse_input():
     """
 
     seating_dict = defaultdict(lambda: {})
-    with open('input.txt') as f:
+    with open(input_file) as f:
         for line in f:
             happiness = line.split()
             name1 = happiness[0]
@@ -32,3 +32,35 @@ def symmetrical_dict(seating_dict):
                 continue
     return updated_dict
 
+def calculate_max_happiness(seating_dict, remaining_nodes, start_node, current_node):
+
+    happiness_options = []
+    if not remaining_nodes:
+        return seating_dict[start_node][current_node]
+    for next_node in remaining_nodes:
+        happiness = 0
+        possible_next_nodes = remaining_nodes[:]
+        happiness += seating_dict[current_node][next_node]
+        happiness += calculate_max_happiness(
+                seating_dict,
+                possible_next_nodes,
+                start_node,
+                possible_next_nodes.pop(remaining_nodes.index(next_node)),
+        )
+        happiness_options.append(happiness)
+    return max(happiness_options)
+
+def solve_physical_idiocy():
+
+    #seating_dict = symmetrical_dict(parse_input('input.txt')) # Part 1
+    seating_dict = symmetrical_dict(parse_input('input2.txt')) # Part 2
+
+    remaining_people = seating_dict.keys()[:]
+    start_node = 'Alice'
+    remaining_people.remove('Alice')
+    return calculate_max_happiness(
+            seating_dict,
+            remaining_people,
+            start_node,
+            start_node,
+    )
