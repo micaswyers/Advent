@@ -21,6 +21,7 @@ def parse_input(input_file):
     return seating_dict
 
 def symmetrical_dict(seating_dict):
+    """Returns updated dictionary adding together Person A & Person B's changes in happiness"""
 
     updated_dict = defaultdict(lambda: {})
     for person, units_dict in seating_dict.iteritems():
@@ -33,6 +34,17 @@ def symmetrical_dict(seating_dict):
     return updated_dict
 
 def calculate_max_happiness(seating_dict, remaining_nodes, start_node, current_node):
+    """Returns maximum happiness number possible
+
+        Args:
+            seating_dict: dict mapping person to other people + change in happiness
+            remaining_nodes: list of people not yet seated
+            start_node: where you start the seating arrangement
+            current_node: whom you just seated
+        Returns:
+            maximum happiness configuration
+     """
+
 
     happiness_options = []
     if not remaining_nodes:
@@ -51,6 +63,7 @@ def calculate_max_happiness(seating_dict, remaining_nodes, start_node, current_n
     return max(happiness_options)
 
 def solve_physical_idiocy():
+    """Find the best seating arrangement & return its happiness total"""
 
     #seating_dict = symmetrical_dict(parse_input('input.txt')) # Part 1
     seating_dict = symmetrical_dict(parse_input('input2.txt')) # Part 2
