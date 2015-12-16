@@ -54,5 +54,34 @@ def optimize_cookie_points(properties):
                     all_scores.append(total_cookie_score)
     return max(all_scores)
 
+# Part 2
+def optimize_for_calories(properties):
+    """Return max possible score given constraint of 500cals"""
 
-
+    calories_dict = properties.pop('calories')
+    all_scores = []
+    for num1 in range(101):
+        for num2 in range(101-num1):
+            for num3 in range(101-num1-num2):
+                num4 = (100 - num1 - num2 - num3)
+                total_calories = sum([
+                                        num1 * calories_dict['sprinkles'],
+                                        num2 * calories_dict['peanutbutter'],
+                                        num3 * calories_dict['frosting'],
+                                        num4 * calories_dict['sugar'],
+                                    ])
+                if total_calories == 500:
+                    totals = []
+                    for prop, ingredient_amount in properties.iteritems():
+                        total_prop_score = sum([
+                                                num1 * ingredient_amount['sprinkles'],
+                                                num2 * ingredient_amount['peanutbutter'],
+                                                num3 * ingredient_amount['frosting'],
+                                                num4 * ingredient_amount['sugar'],
+                                            ])
+                        if total_prop_score < 0:
+                            total_prop_score = 0
+                        totals.append(total_prop_score)
+                        total_cookie_score = reduce(lambda x, y: x*y, totals)
+                        all_scores.append(total_cookie_score)
+    return max(all_scores)
