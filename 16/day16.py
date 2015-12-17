@@ -38,15 +38,36 @@ def find_sue(sues_dict):
     Args:
         sues_dict: dict mapping number to dict of known possessions & counts
     Returns:
-        possible_sues: list containing ints representing possible Aunt Sue matches
+        int representing possible Aunt Sue match
     """
 
-    possible_sues = []
+    possible_sue = None
     for num_sue, items in sues_dict.iteritems():
         possible_match = []
         for item, number in items.iteritems():
             if number == TARGET_SUE[item]:
                 possible_match.append(True)
         if len(possible_match) == 3:
-            possible_sues.append(num_sue)
-    return possible_sues
+            return num_sue
+
+# Part 2
+def find_sue2(sues_dict):
+    """Returns list containing numbers of possible Aunt Sues
+
+    Args:
+        sues_dict: dict mapping number to dict of known possessions & counts
+    Returns:
+        int representing possible Aunt Sue match
+    """
+
+    for num_sue, items in sues_dict.iteritems():
+        possible_match = []
+        for item, number in items.iteritems():
+            if item not in ['cats', 'trees', 'pomeranians', 'goldfish'] and number == TARGET_SUE[item]:
+                possible_match.append(True)
+            elif item in ['cats', 'trees'] and number > TARGET_SUE[item]:
+                possible_match.append(True)
+            elif item in ['pomeranians', 'goldfish'] and number < TARGET_SUE[item]:
+                possible_match.append(True)
+        if len(possible_match) == 3:
+            return num_sue
