@@ -10,7 +10,7 @@ def estimate_wrapping():
         Total square feet needed of wrapping paper (int)
     """
 
-    with open('day2_dimensions.txt') as dimensions_file:
+    with open('input.txt') as dimensions_file:
         total_paper = 0
         for line in dimensions_file:
             dimensions = line.split('x')
@@ -35,7 +35,7 @@ def estimate_ribbon():
     Returns:
         Total feet of ribbon (int)
     """
-    with open('day2_dimensions.txt') as dimensions_file:
+    with open('input.txt') as dimensions_file:
         total_ribbon = 0
         for line in dimensions_file:
             dimensions = line.split('x')
