@@ -15,8 +15,15 @@ def make_dict(filename):
     return replacements_dict
 
 def find_symbols(calib_str):
+    """Returns list of symbols (strings) in a given string
 
-    symbol_finder = re.compile('[A-Z][a-z]?').finditer
+        Args:
+            calib_str: string used for calibration
+        Returns:
+            sumbols: list of strings, each representing on symbol
+    """
+
+    symbol_finder = re.compile('e|[A-Z][a-z]?').finditer
     symbols = []
     for match in symbol_finder(calib_str):
         symbol = calib_str[match.start():match.end()]
@@ -24,6 +31,14 @@ def find_symbols(calib_str):
     return symbols
 
 def make_substitutions(symbols_list, replacements_dict):
+    """Returns set of new strings, each made by sub-ing one symbol
+
+        Args:
+            symbols_list: list of symbols (string) representing original calibration string
+            replacements_dict: dict mapping strings to what they can be replaced with
+        Returns:
+            new_strings: set of all possible unique new strings
+    """
 
     new_strings = set()
     for idx in range(len(symbols_list)):
@@ -40,6 +55,7 @@ def make_substitutions(symbols_list, replacements_dict):
     return new_strings
 
 def count_all_strings():
+    """Returns number of all possible new strings for Part 1"""
 
     replacements_dict = make_dict('replacements.txt')
     with open('calibration.txt') as f:
@@ -47,3 +63,26 @@ def count_all_strings():
     symbols_list = find_symbols(calib_str)
     new_strings = make_substitutions(symbols_list, replacements_dict)
     return len(new_strings)
+
+# Part 2
+def make_new_molecule(start, target, replacements_dict, num_fusions=0):
+    """Returns number of steps required to make target molecule out of start"""
+
+    print "num fusions is: ", num_fusions
+    if len(start) > len(target):
+        return 0
+    num_fusions += 1
+    start_syms = find_symbols(start)
+    new_strings = make_substitutions(start_syms, replacements_dict)
+    for new_string in new_strings:
+        if new_string == target:
+            return 0
+        num_fusions += make_new_molecule(new_string, target, replacements_dict, num_fusions)
+    return num_fusions
+
+def foo():
+
+    start = 'e'
+    target = 'HOH'
+    replacements_dict = make_dict('test_input2.txt')
+    return make_new_molecule(start, target, replacements_dict)
