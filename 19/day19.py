@@ -65,24 +65,29 @@ def count_all_strings():
     return len(new_strings)
 
 # Part 2
-def make_new_molecule(start, target, replacements_dict, num_fusions=0):
+def make_new_molecule(start, target, replacements_dict, depth):
     """Returns number of steps required to make target molecule out of start"""
-
-    print "num fusions is: ", num_fusions
-    if len(start) > len(target):
-        return 0
-    num_fusions += 1
-    start_syms = find_symbols(start)
-    new_strings = make_substitutions(start_syms, replacements_dict)
+    if depth == 0:
+        #print "Start ", start
+        #print "Target ", target
+        if start == target:
+            return True
+        else:
+            return False
+    symbols = find_symbols(start)
+    new_strings = make_substitutions(symbols, replacements_dict)
     for new_string in new_strings:
-        if new_string == target:
-            return 0
-        num_fusions += make_new_molecule(new_string, target, replacements_dict, num_fusions)
-    return num_fusions
+        if make_new_molecule(new_string, target, replacements_dict, depth-1):
+            return True
+    return False
 
-def foo():
+def find_path(start="e", target="HOH"):
 
-    start = 'e'
-    target = 'HOH'
-    replacements_dict = make_dict('test_input2.txt')
-    return make_new_molecule(start, target, replacements_dict)
+    depth = 0
+    replacements_dict = make_dict("test_input2.txt")
+    is_found = False
+    while not is_found:
+        depth += 1
+        print depth
+        is_found = make_new_molecule(start, target, replacements_dict, depth)
+    return depth
