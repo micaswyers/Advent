@@ -65,29 +65,29 @@ def count_all_strings():
     return len(new_strings)
 
 # Part 2
-def make_new_molecule(start, target, replacements_dict, depth):
+def make_new_molecule(start, target, replacements_dict, depth, depth_dict):
     """Returns number of steps required to make target molecule out of start"""
     if depth == 0:
-        #print "Start ", start
-        #print "Target ", target
         if start == target:
             return True
         else:
             return False
     symbols = find_symbols(start)
+    depth_dict[depth].add(start)
     new_strings = make_substitutions(symbols, replacements_dict)
     for new_string in new_strings:
-        if make_new_molecule(new_string, target, replacements_dict, depth-1):
-            return True
+        if not new_string in depth_dict[depth]:
+            if make_new_molecule(new_string, target, replacements_dict, depth-1, depth_dict):
+                return True
     return False
 
-def find_path(start="e", target="HOH"):
+def find_path(file_name="replacements.txt", start="e", target="HOH"):
 
     depth = 0
-    replacements_dict = make_dict("test_input2.txt")
+    replacements_dict = make_dict(file_name)
     is_found = False
     while not is_found:
         depth += 1
-        print depth
-        is_found = make_new_molecule(start, target, replacements_dict, depth)
+        depth_dict = defaultdict(lambda: set())
+        is_found = make_new_molecule(start, target, replacements_dict, depth, depth_dict)
     return depth
