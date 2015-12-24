@@ -1,6 +1,9 @@
 from collections import defaultdict
 import re
 
+with open('calibration.txt') as f:
+    CALIBRATION = f.readline().strip()
+
 # Part 1
 
 def make_dict(filename):
